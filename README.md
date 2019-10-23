@@ -1,0 +1,2 @@
+# Penguin.Cms.InternalMessaging.Repositories
+ 
