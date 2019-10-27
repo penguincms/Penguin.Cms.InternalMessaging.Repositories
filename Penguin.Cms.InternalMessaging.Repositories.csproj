@@ -7,14 +7,8 @@
     <Description>Not Available</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Penguin.Cms.Email.Abstractions" Version="1.0.0" />
-    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.0" />
-    <PackageReference Include="Penguin.Email.Abstractions" Version="1.0.0" />
-    <PackageReference Include="Penguin.Email.Templating.Abstractions" Version="1.0.0" />
-    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.3" />
-    <PackageReference Include="Penguin.Messaging.Persistence" Version="2.2.4" />
-    <PackageReference Include="Penguin.Security.Abstractions" Version="2.0.0" />
-    <PackageReference Include="Penguin.Cms.Security" Version="3.4.0" />
-    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.0-63707630128" />
+    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.0-T9LXGUJ" />
+    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.3-T9LXGUJ" />
+    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.0-T9LXGUJ" />
   </ItemGroup>
 </Project>
