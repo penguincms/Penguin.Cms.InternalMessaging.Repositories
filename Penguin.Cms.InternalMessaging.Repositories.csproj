@@ -7,8 +7,8 @@
     <Description>Not Available</Description>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.0-T9LXGUJ" />
-    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.3-T9LXGUJ" />
-    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.0-T9LXGUJ" />
+    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.1-T9M1HHH" />
+    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.4-T9M1HHH" />
+    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.1-T9M1HHH" />
   </ItemGroup>
 </Project>
