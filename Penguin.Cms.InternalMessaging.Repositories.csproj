@@ -5,10 +5,12 @@
     <PackageProjectUrl>https://github.com/penguincms/Penguin.Cms.InternalMessaging.Repositories</PackageProjectUrl>
     <Version>1.0.0</Version>
     <Description>Not Available</Description>
+    <AssemblyName>Penguin.Cms.InternalMessaging.Repositories</AssemblyName>
+    <RootNamespace>Penguin.Cms.InternalMessaging.Repositories</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.1-T9M1HHH" />
-    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.4-T9M1HHH" />
-    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.1-T9M1HHH" />
+    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.1-T9M2XAX" />
+    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.4-T9M2XAX" />
+    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.1-T9M2XAX" />
   </ItemGroup>
 </Project>
