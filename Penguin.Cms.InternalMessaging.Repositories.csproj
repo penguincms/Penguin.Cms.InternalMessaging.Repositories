@@ -11,6 +11,6 @@
   <ItemGroup>
     <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.1-T9M3AAF" />
     <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.4-T9M3AAF" />
-    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.1-T9M3AAF" />
+    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.1-T9M4A3K" />
   </ItemGroup>
 </Project>
