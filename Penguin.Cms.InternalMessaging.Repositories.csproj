@@ -10,8 +10,8 @@
     <DocumentationFile>Penguin.Cms.InternalMessaging.Repositories.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.4-T9QUIQ4" />
-    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.1-T9QUIQ4" />
-    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.1-T9QUIQ4" />
+    <PackageReference Include="Penguin.Extensions.Collections" Version="2.0.4-T9RGTUI" />
+    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="1.0.1-T9RGTUI" />
+    <PackageReference Include="Penguin.Cms.Security.Repositories" Version="3.4.1-T9RGTUI" />
   </ItemGroup>
 </Project>
