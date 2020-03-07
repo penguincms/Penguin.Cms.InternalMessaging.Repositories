@@ -30,7 +30,7 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
 
         protected Func<InternalMessage, bool> Filter => (entity) =>
         {
-            return SecurityProvider.TryCheckAccess(entity);
+            return this.SecurityProvider.TryCheckAccess(entity);
         };
 
         protected IRepository<SecurityGroup> SecurityGroupRepository { get; set; }
@@ -39,11 +39,11 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
 
         public MessageRepository(IPersistenceContext<InternalMessage> dbContext, EntityPermissionsRepository entityPermissionsRepository, IRepository<SecurityGroup> securityGroupRepository, ISecurityProvider<InternalMessage> securityProvider = null, ISendTemplates emailTemplateRepository = null, IUserSession userSession = null, MessageBus messageBus = null) : base(dbContext, messageBus)
         {
-            EntityPermissionsRepository = entityPermissionsRepository;
-            SecurityGroupRepository = securityGroupRepository;
-            EmailTemplateRepository = emailTemplateRepository;
-            UserSession = userSession;
-            SecurityProvider = securityProvider;
+            this.EntityPermissionsRepository = entityPermissionsRepository;
+            this.SecurityGroupRepository = securityGroupRepository;
+            this.EmailTemplateRepository = emailTemplateRepository;
+            this.UserSession = userSession;
+            this.SecurityProvider = securityProvider;
         }
 
         public InternalMessage Draft(string Recipient, string Origin = null, int ParentId = 0)
@@ -76,7 +76,10 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
             return model;
         }
 
-        public List<InternalMessage> GetByParentId(int parentId) => this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+        public List<InternalMessage> GetByParentId(int parentId)
+        {
+            return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+        }
 
         public List<InternalMessage> GetByRecipient(SecurityGroup Recipient)
         {
@@ -156,7 +159,10 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
             }
         }
 
-        public List<InternalMessage> GetRootMenus() => this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+        public List<InternalMessage> GetRootMenus()
+        {
+            return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+        }
 
         public InternalMessage RecursiveFill(InternalMessage Message)
         {
@@ -180,17 +186,17 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
                 throw new ArgumentNullException(nameof(toSend));
             }
 
-            SecurityGroup Recipient = SecurityGroupRepository.Find(toSend.Recipient);
-            SecurityGroup Origin = SecurityGroupRepository.Find(toSend.Origin);
+            SecurityGroup Recipient = this.SecurityGroupRepository.Find(toSend.Recipient);
+            SecurityGroup Origin = this.SecurityGroupRepository.Find(toSend.Origin);
 
             if (Recipient != null)
             {
-                EntityPermissionsRepository.AddPermission(toSend, Recipient, PermissionTypes.Read);
+                this.EntityPermissionsRepository.AddPermission(toSend, Recipient, PermissionTypes.Read);
             }
 
             if (Origin != null)
             {
-                EntityPermissionsRepository.AddPermission(toSend, Origin, PermissionTypes.Read);
+                this.EntityPermissionsRepository.AddPermission(toSend, Origin, PermissionTypes.Read);
             }
 
             this.AddOrUpdate(toSend);
