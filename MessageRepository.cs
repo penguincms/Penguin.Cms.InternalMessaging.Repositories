@@ -93,7 +93,7 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
 
         public List<InternalMessage> GetByRecipient(Guid Recipient)
         {
-            Contract.Requires(Recipient != Guid.Empty);
+            
 
             List<InternalMessage> topLevel = this.Where(n => n.Recipient == Recipient).Where(this.Filter).ToList();
 
