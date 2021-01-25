@@ -15,13 +15,11 @@ using Penguin.Security.Abstractions.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Penguin.Cms.Modules.InternalMessaging.Repositories
 {
-    [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters")]
-    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix")]
+
     public class MessageRepository : EntityRepository<InternalMessage>, IEmailHandler
     {
         protected ISendTemplates EmailTemplateRepository { get; set; }
@@ -93,7 +91,7 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
 
         public List<InternalMessage> GetByRecipient(Guid Recipient)
         {
-            
+
 
             List<InternalMessage> topLevel = this.Where(n => n.Recipient == Recipient).Where(this.Filter).ToList();
 
