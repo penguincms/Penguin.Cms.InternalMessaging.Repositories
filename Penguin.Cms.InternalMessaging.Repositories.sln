@@ -1,25 +1,34 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
-VisualStudioVersion = 16.0.29411.108
+VisualStudioVersion = 16.6.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Penguin.Cms.InternalMessaging.Repositories", "Penguin.Cms.InternalMessaging.Repositories.csproj", "{EF4F3A74-29E6-4EEE-BD79-32BB3D8E931A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Penguin.Cms.InternalMessaging.Repositories", "Penguin.Cms.InternalMessaging.Repositories.csproj", "{7700B092-25A3-4CDF-A46C-99B9BE1254DE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
 		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EF4F3A74-29E6-4EEE-BD79-32BB3D8E931A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EF4F3A74-29E6-4EEE-BD79-32BB3D8E931A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF4F3A74-29E6-4EEE-BD79-32BB3D8E931A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EF4F3A74-29E6-4EEE-BD79-32BB3D8E931A}.Release|Any CPU.Build.0 = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {D8E4C117-27DC-4CFB-8718-6504C8F5456E}
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Debug|x64.Build.0 = Debug|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Debug|x86.Build.0 = Debug|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Release|x64.ActiveCfg = Release|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Release|x64.Build.0 = Release|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Release|x86.ActiveCfg = Release|Any CPU
+		{7700B092-25A3-4CDF-A46C-99B9BE1254DE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -14,7 +14,6 @@ using Penguin.Security.Abstractions.Extensions;
 using Penguin.Security.Abstractions.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace Penguin.Cms.Modules.InternalMessaging.Repositories
@@ -26,10 +25,7 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
 
         protected EntityPermissionsRepository EntityPermissionsRepository { get; set; }
 
-        protected Func<InternalMessage, bool> Filter => (entity) =>
-        {
-            return this.SecurityProvider.TryCheckAccess(entity);
-        };
+        protected Func<InternalMessage, bool> Filter => (entity) => this.SecurityProvider.TryCheckAccess(entity);
 
         protected IRepository<SecurityGroup> SecurityGroupRepository { get; set; }
         protected ISecurityProvider<InternalMessage> SecurityProvider { get; set; }
