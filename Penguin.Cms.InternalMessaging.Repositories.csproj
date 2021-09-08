@@ -11,7 +11,7 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Penguin.Extensions.Collections" Version="5.0.6-TAHULSY" />
-    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="5.0.6-TAHULSY" />
     <PackageReference Include="Penguin.Cms.Security.Repositories" Version="5.0.6-TAKOD19" />
+    <PackageReference Include="Penguin.Cms.InternalMessaging" Version="5.0.6-TAKUDQX" />
   </ItemGroup>
 </Project>
