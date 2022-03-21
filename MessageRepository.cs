@@ -70,10 +70,7 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
             return model;
         }
 
-        public List<InternalMessage> GetByParentId(int parentId)
-        {
-            return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
-        }
+        public List<InternalMessage> GetByParentId(int parentId) => this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
 
         public List<InternalMessage> GetByRecipient(SecurityGroup Recipient)
         {
@@ -153,10 +150,7 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
             }
         }
 
-        public List<InternalMessage> GetRootMenus()
-        {
-            return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
-        }
+        public List<InternalMessage> GetRootMenus() => this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
 
         public InternalMessage RecursiveFill(InternalMessage Message)
         {
