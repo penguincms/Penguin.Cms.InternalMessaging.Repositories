@@ -1,4 +1,4 @@
-﻿using Penguin.Cms.Email.Abstractions.Attributes;
+using Penguin.Cms.Email.Abstractions.Attributes;
 using Penguin.Cms.InternalMessaging;
 using Penguin.Cms.Repositories;
 using Penguin.Cms.Security;
@@ -84,7 +84,6 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
 
         public List<InternalMessage> GetByRecipient(Guid Recipient)
         {
-
 
             List<InternalMessage> topLevel = this.Where(n => n.Recipient == Recipient).Where(this.Filter).ToList();
 
