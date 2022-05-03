@@ -2,7 +2,7 @@
   <Import Project="Penguin.Projects.Shared\Penguin.Projects.Shared.csproj" />
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;netstandard2.1;net5.0</TargetFrameworks>
-    <PackageProjectUrl>https://github.com/PenguinCMS/Penguin.Cms.InternalMessaging.Repositories</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/PenguinCms/Penguin.Cms.InternalMessaging.Repositories</PackageProjectUrl>
     <Version>5.0.5</Version>
     <Description>Not Available</Description>
     <AssemblyName>Penguin.Cms.InternalMessaging.Repositories</AssemblyName>
