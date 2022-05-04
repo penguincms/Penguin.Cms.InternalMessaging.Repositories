@@ -1,5 +1,4 @@
 using Penguin.Cms.Email.Abstractions.Attributes;
-using Penguin.Cms.InternalMessaging;
 using Penguin.Cms.Repositories;
 using Penguin.Cms.Security;
 using Penguin.Cms.Security.Repositories;
@@ -16,7 +15,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Penguin.Cms.Modules.InternalMessaging.Repositories
+namespace Penguin.Cms.InternalMessaging.Repositories
 {
 
     public class MessageRepository : EntityRepository<InternalMessage>, IEmailHandler
@@ -70,7 +69,28 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
             return model;
         }
 
-        public List<InternalMessage> GetByParentId(int parentId) => this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+
+        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (net5.0)'
+        Before:
+                public List<InternalMessage> GetByParentId(int parentId) => this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+        After:
+                public List<InternalMessage> GetByParentId(int parentId)
+                {
+                    return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+        */
+
+        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (netstandard2.1)'
+        Before:
+                public List<InternalMessage> GetByParentId(int parentId) => this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+        After:
+                public List<InternalMessage> GetByParentId(int parentId)
+                {
+                    return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+        */
+        public List<InternalMessage> GetByParentId(int parentId)
+        {
+            return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+        }
 
         public List<InternalMessage> GetByRecipient(SecurityGroup Recipient)
         {
@@ -149,7 +169,28 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
             }
         }
 
-        public List<InternalMessage> GetRootMenus() => this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+
+        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (net5.0)'
+        Before:
+                public List<InternalMessage> GetRootMenus() => this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+        After:
+                public List<InternalMessage> GetRootMenus()
+                {
+                    return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+        */
+
+        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (netstandard2.1)'
+        Before:
+                public List<InternalMessage> GetRootMenus() => this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+        After:
+                public List<InternalMessage> GetRootMenus()
+                {
+                    return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+        */
+        public List<InternalMessage> GetRootMenus()
+        {
+            return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+        }
 
         public InternalMessage RecursiveFill(InternalMessage Message)
         {
@@ -229,7 +270,7 @@ namespace Penguin.Cms.Modules.InternalMessaging.Repositories
                 throw new ArgumentNullException(nameof(Recipient));
             }
 
-            this.SendMessage(Body, Subject, Recipient.Guid, ParentId, Origin?.Guid);
+            _ = this.SendMessage(Body, Subject, Recipient.Guid, ParentId, Origin?.Guid);
         }
     }
 }
