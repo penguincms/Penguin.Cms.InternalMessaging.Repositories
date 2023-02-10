@@ -17,14 +17,13 @@ using System.Linq;
 
 namespace Penguin.Cms.InternalMessaging.Repositories
 {
-
     public class MessageRepository : EntityRepository<InternalMessage>, IEmailHandler
     {
         protected ISendTemplates EmailTemplateRepository { get; set; }
 
         protected EntityPermissionsRepository EntityPermissionsRepository { get; set; }
 
-        protected Func<InternalMessage, bool> Filter => (entity) => this.SecurityProvider.TryCheckAccess(entity);
+        protected Func<InternalMessage, bool> Filter => (entity) => SecurityProvider.TryCheckAccess(entity);
 
         protected IRepository<SecurityGroup> SecurityGroupRepository { get; set; }
         protected ISecurityProvider<InternalMessage> SecurityProvider { get; set; }
@@ -32,16 +31,16 @@ namespace Penguin.Cms.InternalMessaging.Repositories
 
         public MessageRepository(IPersistenceContext<InternalMessage> dbContext, EntityPermissionsRepository entityPermissionsRepository, IRepository<SecurityGroup> securityGroupRepository, ISecurityProvider<InternalMessage> securityProvider = null, ISendTemplates emailTemplateRepository = null, IUserSession userSession = null, MessageBus messageBus = null) : base(dbContext, messageBus)
         {
-            this.EntityPermissionsRepository = entityPermissionsRepository;
-            this.SecurityGroupRepository = securityGroupRepository;
-            this.EmailTemplateRepository = emailTemplateRepository;
-            this.UserSession = userSession;
-            this.SecurityProvider = securityProvider;
+            EntityPermissionsRepository = entityPermissionsRepository;
+            SecurityGroupRepository = securityGroupRepository;
+            EmailTemplateRepository = emailTemplateRepository;
+            UserSession = userSession;
+            SecurityProvider = securityProvider;
         }
 
         public InternalMessage Draft(string Recipient, string Origin = null, int ParentId = 0)
         {
-            InternalMessage model = new InternalMessage
+            InternalMessage model = new()
             {
                 Parent = new InternalMessage
                 {
@@ -51,85 +50,56 @@ namespace Penguin.Cms.InternalMessaging.Repositories
 
             if (string.IsNullOrWhiteSpace(Origin))
             {
-                model.From = this.UserSession.LoggedInUser.ExternalId;
-                model.Origin = this.UserSession.LoggedInUser.Guid;
+                model.From = UserSession.LoggedInUser.ExternalId;
+                model.Origin = UserSession.LoggedInUser.Guid;
             }
             else
             {
-                SecurityGroup origin = this.SecurityGroupRepository.Find(Guid.Parse(Origin));
+                SecurityGroup origin = SecurityGroupRepository.Find(Guid.Parse(Origin));
 
                 model.From = origin.ToString();
                 model.Origin = origin.Guid;
             }
 
-            SecurityGroup recipient = this.SecurityGroupRepository.Find(Guid.Parse(Recipient));
+            SecurityGroup recipient = SecurityGroupRepository.Find(Guid.Parse(Recipient));
             model.Recipient = recipient?.Guid ?? Guid.Parse(Recipient);
             model.To = recipient?.ToString() ?? Recipient;
 
             return model;
-        }
+        }    
 
-
-        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (net5.0)'
-        Before:
-                public List<InternalMessage> GetByParentId(int parentId) => this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
-        After:
-                public List<InternalMessage> GetByParentId(int parentId)
-                {
-                    return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
-        */
-
-        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (netstandard2.1)'
-        Before:
-                public List<InternalMessage> GetByParentId(int parentId) => this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
-        After:
-                public List<InternalMessage> GetByParentId(int parentId)
-                {
-                    return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
-        */
         public List<InternalMessage> GetByParentId(int parentId)
         {
-            return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(this.Filter);
+            return this.Where(n => n.Parent != null && n.Parent._Id == parentId).ToList(Filter);
         }
 
         public List<InternalMessage> GetByRecipient(SecurityGroup Recipient)
         {
-            if (Recipient is null)
-            {
-                throw new ArgumentNullException(nameof(Recipient));
-            }
-
-            return this.GetByRecipient(Recipient.Guid);
+            return Recipient is null ? throw new ArgumentNullException(nameof(Recipient)) : GetByRecipient(Recipient.Guid);
         }
 
         public List<InternalMessage> GetByRecipient(Guid Recipient)
         {
-
-            List<InternalMessage> topLevel = this.Where(n => n.Recipient == Recipient).Where(this.Filter).ToList();
+            List<InternalMessage> topLevel = this.Where(n => n.Recipient == Recipient).Where(Filter).ToList();
 
             return topLevel;
         }
 
         public List<InternalMessage> GetBySender(SecurityGroup Sender)
         {
-            if (Sender is null)
-            {
-                throw new ArgumentNullException(nameof(Sender));
-            }
-
-            return this.GetBySender(Sender.Guid);
+            return Sender is null ? throw new ArgumentNullException(nameof(Sender)) : GetBySender(Sender.Guid);
         }
 
         public List<InternalMessage> GetBySender(Guid Sender)
         {
-            List<InternalMessage> topLevel = this.Where(n => n.Origin == Sender).Where(this.Filter).ToList();
+            List<InternalMessage> topLevel = this.Where(n => n.Origin == Sender).Where(Filter).ToList();
 
             return topLevel;
         }
 
         public InternalMessage GetMessageChain(Guid messageGuid)
         {
-            InternalMessage thisMessage = this.Find(messageGuid);
+            InternalMessage thisMessage = Find(messageGuid);
             InternalMessage message = thisMessage;
 
             while (thisMessage?.Parent != null)
@@ -143,53 +113,21 @@ namespace Penguin.Cms.InternalMessaging.Repositories
 
         public List<InternalMessage> GetRootByRecipient(SecurityGroup Recipient, bool Recursive = false)
         {
-            IEnumerable<InternalMessage> topLevel = this.Where(n => n.Recipient == Recipient.Guid && n.Parent == null).Where(this.Filter);
+            IEnumerable<InternalMessage> topLevel = this.Where(n => n.Recipient == Recipient.Guid && n.Parent == null).Where(Filter);
 
-            if (Recursive)
-            {
-                return topLevel.Select(m => this.RecursiveFill(m)).ToList();
-            }
-            else
-            {
-                return topLevel.ToList();
-            }
+            return Recursive ? topLevel.Select(RecursiveFill).ToList() : topLevel.ToList();
         }
 
         public List<InternalMessage> GetRootBySender(SecurityGroup Sender, bool Recursive = false)
         {
-            IEnumerable<InternalMessage> topLevel = this.Where(n => n.Origin == Sender.Guid && n.Parent == null).Where(this.Filter);
+            IEnumerable<InternalMessage> topLevel = this.Where(n => n.Origin == Sender.Guid && n.Parent == null).Where(Filter);
 
-            if (Recursive)
-            {
-                return topLevel.Select(m => this.RecursiveFill(m)).ToList();
-            }
-            else
-            {
-                return topLevel.ToList();
-            }
+            return Recursive ? topLevel.Select(RecursiveFill).ToList() : topLevel.ToList();
         }
 
-
-        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (net5.0)'
-        Before:
-                public List<InternalMessage> GetRootMenus() => this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
-        After:
-                public List<InternalMessage> GetRootMenus()
-                {
-                    return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
-        */
-
-        /* Unmerged change from project 'Penguin.Cms.InternalMessaging.Repositories.Local (netstandard2.1)'
-        Before:
-                public List<InternalMessage> GetRootMenus() => this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
-        After:
-                public List<InternalMessage> GetRootMenus()
-                {
-                    return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
-        */
         public List<InternalMessage> GetRootMenus()
         {
-            return this.Where(n => n.Parent == null).ToList().Where(this.Filter).Select(n => this.RecursiveFill(n)).ToList();
+            return this.Where(n => n.Parent == null).ToList().Where(Filter).Select(RecursiveFill).ToList();
         }
 
         public InternalMessage RecursiveFill(InternalMessage Message)
@@ -198,7 +136,7 @@ namespace Penguin.Cms.InternalMessaging.Repositories
 
             new List<InternalMessage> { Message }.RecursiveProcess(thisChild =>
             {
-                thisChild.Children = AllItems[thisChild._Id].Where(this.Filter).ToList();
+                thisChild.Children = AllItems[thisChild._Id].Where(Filter).ToList();
 
                 return thisChild.Children;
             });
@@ -214,22 +152,22 @@ namespace Penguin.Cms.InternalMessaging.Repositories
                 throw new ArgumentNullException(nameof(toSend));
             }
 
-            SecurityGroup Recipient = this.SecurityGroupRepository.Find(toSend.Recipient);
-            SecurityGroup Origin = this.SecurityGroupRepository.Find(toSend.Origin);
+            SecurityGroup Recipient = SecurityGroupRepository.Find(toSend.Recipient);
+            SecurityGroup Origin = SecurityGroupRepository.Find(toSend.Origin);
 
             if (Recipient != null)
             {
-                this.EntityPermissionsRepository.AddPermission(toSend, Recipient, PermissionTypes.Read);
+                EntityPermissionsRepository.AddPermission(toSend, Recipient, PermissionTypes.Read);
             }
 
             if (Origin != null)
             {
-                this.EntityPermissionsRepository.AddPermission(toSend, Origin, PermissionTypes.Read);
+                EntityPermissionsRepository.AddPermission(toSend, Origin, PermissionTypes.Read);
             }
 
-            this.AddOrUpdate(toSend);
+            AddOrUpdate(toSend);
 
-            this.EmailTemplateRepository.TrySendTemplate(new Dictionary<string, object>()
+            EmailTemplateRepository.TrySendTemplate(new Dictionary<string, object>()
             {
                 [nameof(toSend)] = toSend,
                 [nameof(RecipientEmail)] = RecipientEmail
@@ -240,22 +178,22 @@ namespace Penguin.Cms.InternalMessaging.Repositories
 
         public InternalMessage SendMessage(string Body, string Subject, Guid Recipient, int ParentId = 0, Guid? Origin = null)
         {
-            if ((Origin.HasValue ? this.SecurityGroupRepository.Find(Origin.Value) as ISecurityGroup : this.UserSession.LoggedInUser) is ISecurityGroup origin)
+            if ((Origin.HasValue ? SecurityGroupRepository.Find(Origin.Value) as ISecurityGroup : UserSession.LoggedInUser) is ISecurityGroup origin)
             {
-                SecurityGroup target = this.SecurityGroupRepository.Find(Recipient);
+                SecurityGroup target = SecurityGroupRepository.Find(Recipient);
 
-                InternalMessage toSend = new InternalMessage()
+                InternalMessage toSend = new()
                 {
                     Body = Body,
                     Subject = Subject,
                     Recipient = target?.Guid ?? Recipient,
-                    Parent = ParentId == 0 ? null : this.Find(ParentId),
+                    Parent = ParentId == 0 ? null : Find(ParentId),
                     Origin = origin.Guid,
                     To = target?.ToString() ?? Recipient.ToString(),
                     From = origin.ToString()
                 };
 
-                return this.SendMessage(toSend, target is User t ? t.Email : string.Empty);
+                return SendMessage(toSend, target is User t ? t.Email : string.Empty);
             }
             else
             {
@@ -270,7 +208,7 @@ namespace Penguin.Cms.InternalMessaging.Repositories
                 throw new ArgumentNullException(nameof(Recipient));
             }
 
-            _ = this.SendMessage(Body, Subject, Recipient.Guid, ParentId, Origin?.Guid);
+            _ = SendMessage(Body, Subject, Recipient.Guid, ParentId, Origin?.Guid);
         }
     }
 }
