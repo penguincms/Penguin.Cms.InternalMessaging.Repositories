@@ -26,7 +26,9 @@ namespace Penguin.Cms.InternalMessaging.Repositories
         protected Func<InternalMessage, bool> Filter => (entity) => SecurityProvider.TryCheckAccess(entity);
 
         protected IRepository<SecurityGroup> SecurityGroupRepository { get; set; }
+
         protected ISecurityProvider<InternalMessage> SecurityProvider { get; set; }
+
         protected IUserSession UserSession { get; set; }
 
         public MessageRepository(IPersistenceContext<InternalMessage> dbContext, EntityPermissionsRepository entityPermissionsRepository, IRepository<SecurityGroup> securityGroupRepository, ISecurityProvider<InternalMessage> securityProvider = null, ISendTemplates emailTemplateRepository = null, IUserSession userSession = null, MessageBus messageBus = null) : base(dbContext, messageBus)
@@ -66,7 +68,7 @@ namespace Penguin.Cms.InternalMessaging.Repositories
             model.To = recipient?.ToString() ?? Recipient;
 
             return model;
-        }    
+        }
 
         public List<InternalMessage> GetByParentId(int parentId)
         {
